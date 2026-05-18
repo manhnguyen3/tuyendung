@@ -3,8 +3,7 @@
 const STORAGE_KEY = "tuyenDungWorkflow_v1";
 
 /** Google Sheet — link chia sẻ /edit hoặc xuất bản pubhtml */
-const DEFAULT_GOOGLE_SHEET_PUB_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs96Y38iag14gR2tVg72YahtcmbfOFyuZbwUNFlzp7qA2juTWHxon6SDe6hRdLDBpx_sDkcMGvV8MR/pubhtml";
+const DEFAULT_GOOGLE_SHEET_PUB_URL ="https://docs.google.com/spreadsheets/d/e/2PACX-1vQs96Y38iag14gR2tVg72YahtcmbfOFyuZbwUNFlzp7qA2juTWHxon6SDe6hRdLDBpx_sDkcMGvV8MR/pubhtml";
 
 /** Google AI Studio (Gemini) — mặc định trong app, không hiển thị trên giao diện */
 const DEFAULT_GEMINI_API_KEY = "";
