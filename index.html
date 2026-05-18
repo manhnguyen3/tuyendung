@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tuyển dụng — Câu hỏi &amp; duyệt HR</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>Ứng dụng tuyển dụng</h1>
+        <p class="subtitle">Dữ liệu từ Google Sheet — AI tự tạo câu hỏi khi tải xong, HR duyệt trên bảng.</p>
+        <p id="sheetHint" class="hint sheet-hint"></p>
+        <p id="autoGenHint" class="hint auto-gen-hint hidden"></p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-primary" id="btnReloadSheet">Tải lại từ Google Sheet</button>
+        <label class="btn btn-secondary file-label">
+          Nhập Excel
+          <input id="fileInput" type="file" accept=".xlsx,.xls" hidden />
+        </label>
+        <button type="button" class="btn btn-ghost" id="btnExportState" title="Tải JSON trạng thái">Xuất trạng thái</button>
+        <button type="button" class="btn btn-ghost" id="btnImportState">Nhập trạng thái</button>
+        <input id="stateImport" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <section class="card filters-card">
+      <div class="filters-grid">
+        <label>
+          Lọc ngành
+          <select id="filterIndustry"></select>
+        </label>
+        <label>
+          Trạng thái
+          <select id="filterStatus">
+            <option value="">Tất cả</option>
+            <option value="new">Chưa tạo câu hỏi</option>
+            <option value="generating">Đang tạo AI</option>
+            <option value="pending_hr">Chờ HR duyệt</option>
+            <option value="approved">Đã duyệt</option>
+            <option value="sent_hrm">Đã gửi HRM</option>
+            <option value="done">Hoàn tất</option>
+            <option value="rejected">Từ chối</option>
+          </select>
+        </label>
+        <label class="grow">
+          Tìm kiếm
+          <input type="search" id="search" placeholder="Tên, email, ngành..." />
+        </label>
+      </div>
+      <div class="filters-grid filters-grid--second">
+        <label class="grow">
+          Webhook HRM (POST JSON, tùy chọn)
+          <input type="url" id="hrmUrl" placeholder="https://..." />
+        </label>
+      </div>
+      <p id="stats" class="stats"></p>
+    </section>
+
+    <section class="card settings-card">
+      <h2 class="card-title">Cấu hình Gemini API</h2>
+      <div class="settings-grid">
+        <label class="grow">
+          API Key (Google AI Studio)
+          <input type="password" id="geminiApiKey" placeholder="AIza..." autocomplete="off" />
+        </label>
+        <label>
+          Model
+          <input type="text" id="geminiModel" placeholder="gemini-2.5-flash" />
+        </label>
+      </div>
+      <p class="hint">Khi tải danh sách ứng viên, hệ thống tự chạy Gemini cho các hồ sơ chưa có câu hỏi AI.</p>
+    </section>
+
+    <section class="card table-card">
+      <div class="table-toolbar">
+        <h2 class="card-title">Danh sách ứng viên</h2>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnExportCsv">Xuất CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="candidateTable">
+          <thead>
+            <tr>
+              <th>Ứng viên</th>
+              <th>Chuyên ngành</th>
+              <th>Email</th>
+              <th>SĐT</th>
+              <th>Trạng thái</th>
+              <th>Câu hỏi</th>
+              <th class="th-actions">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="candidateTableBody"></tbody>
+        </table>
+        <p id="tableEmpty" class="table-empty hidden"></p>
+      </div>
+    </section>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop hidden" aria-hidden="true"></div>
+  <aside id="drawer" class="drawer hidden" role="dialog" aria-labelledby="drawerTitle">
+    <div class="drawer-inner">
+      <header class="drawer-header">
+        <div>
+          <h2 id="drawerTitle">—</h2>
+          <p id="drawerMeta" class="hint"></p>
+        </div>
+        <button type="button" class="btn-icon drawer-close" id="btnCloseDrawer" title="Đóng" aria-label="Đóng">✕</button>
+      </header>
+      <div id="drawerBody" class="drawer-body"></div>
+    </div>
+  </aside>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
